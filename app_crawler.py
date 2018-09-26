@@ -62,7 +62,22 @@ def getCategories(cg_json=None):
 
 	return category_dict
 
+def getGenres(cg_json=None, category_dict=None, target=""):
+	genre_dict = {}
+	if cg_json==None or category_dict==None or target == "":
+		return genre_dict
+	if not category_dict.__contains__(target):
+		return genre_dict
+	for key in cg_json[category_dict[target]]['subgenres'].keys():
+		genre_dict[cg_json[category_dict[target]]['subgenres'][key]['name']] = key
 
+	return genre_dict
+
+
+def crawlByCategory(genre_dict=None):
+	if genre_dict == None:
+		return None
+	print(genre_dict)
 
 
 def main():
@@ -83,6 +98,7 @@ def main():
 				url: 
 				rssUrls: {'': ''}
 				chartUrls: {'': ''}
+				# and for some cases, Games for example, there is still a subgenres
 			}}
 		}
 	}
@@ -118,6 +134,15 @@ def main():
 	## genre url: "https://itunes.apple.com/cn/genre/id6005?mt=8&letter=A"
 	#aUrl = base_url + targetCountry + "/genre/id" + targetCategory_id +"?mt=8"
 	#print(aUrl)
+	'''
+	1. 按照category来，访问到链接如：https://itunes.apple.com/cn/genre/id6005?mt=8，其中'id6005'应该是一个category
+	2. 对于每个category，按照字典顺序遍历，字典[a-z,#]，在[1]中链接后追加如letter=A便可以实现
+	3. 对于每个字典，进行页数遍历，在[2]中链接基础上增加page=1即可实现，通过页面中指定区域是否含有内容标记是否对该字典中字母的内容爬取完毕。
+	这一步主要是对app名称信息的爬取。
+	'''
+	genre_dict = getGenres(cg_json, category_dict, targetCategory)
+	
+	crawlByCategory(genre_dict)
 	
 
 	
