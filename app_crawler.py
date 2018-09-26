@@ -96,37 +96,34 @@ def crawlByCategory(genre_dict=None):
 				page = page - 1
 				
 				# here we've got the target url, pa_genre_url
-
 				# next steps, we need to study the structure of the target html
-
 				# confirm this page contains valid content first
-
-
 				# fetch and parse content from the url
+				parseAUrl(pa_genre_url)
 
 def parseAUrl(url=""):
 	if url=="":
 		return None
 	print(url)
-	#response = requests.get(url)
-	#status_code = response.status_code
-	#html_text = response.text
+	response = requests.get(url)
+	status_code = response.status_code
+	html_text = response.text
 	
-	#print("status_code: %d"%status_code)
-	#print("content:" + html_text)
-	f = open('./page_example.html','r')
-	html_text = f.read()
-	f.close()
+	print("status_code: %d"%status_code)
 
 	html = etree.HTML(html_text)
-	# 主信息块
-	#leftCol = html.xpath('//div[@id="selectedcontent"]/div[@class="column first"]/ul/li/a/text()')
-	leftCol = html.xpath('//div[@id="selectedcontent"]/div[@class="column first"]/ul/li/a/@href')
-	if len(leftCol)==0:
+	# 主信息块，分为左中右三块。
+	leftCol_texts = html.xpath('//div[@id="selectedcontent"]/div[@class="column first"]/ul/li/a/text()')
+	leftCol_hrefs = html.xpath('//div[@id="selectedcontent"]/div[@class="column first"]/ul/li/a/@href')
+	middleCol_texts = html.xpath('//div[@id="selectedcontent"]/div[@class="column"]/ul/li/a/text()')
+	middleCol_hrefs = html.xpath('//div[@id="selectedcontent"]/div[@class="column"]/ul/li/a/@href')
+	rightCol_texts = html.xpath('//div[@id="selectedcontent"]/div[@class="column last"]/ul/li/a/text()')
+	rightCol_hrefs = html.xpath('//div[@id="selectedcontent"]/div[@class="column last"]/ul/li/a/@href')
+	if len(leftCol_texts)==0:
 		print("no element.")
 	else:
-		print(len(leftCol))
-	for each in leftCol:
+		print(len(leftCol_texts))
+	for each in leftCol_texts:
 		print(each)
 
 
@@ -194,11 +191,7 @@ def main():
 	'''
 	genre_dict = getGenres(cg_json, category_dict, targetCategory)
 	
-	#crawlByCategory(genre_dict)
-
-	aUrl = "https://itunes.apple.com/cn/genre/id6001?mt=8&letter=*&page=1"
-	# https://itunes.apple.com/cn/genre/id6001?mt=8&letter=*&page=10
-	parseAUrl(aUrl)
+	crawlByCategory(genre_dict)
 	
 
 	
