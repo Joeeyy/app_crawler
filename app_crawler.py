@@ -75,10 +75,41 @@ def main():
 			name:
 			id:
 			url:
-			rssUrls:
-			chartUrls:
-			subgenres:
+			rssUrls: {'': ''}
+			chartUrls: {'': ''}
+			subgenres: {'': {
+				name: 
+				id: 
+				url: 
+				rssUrls: {'': ''}
+				chartUrls: {'': ''}
+			}}
 		}
+	}
+
+	example: 
+	{
+		36:{
+			name: TV Shows,
+			id: 32
+			url: https://itunes.apple.com/us/genre/tv-shows/id32
+			rssUrls: {
+				'topTvEpisodes':
+				'topTvEpisodeRentals':
+				'topTvSeasons':
+			}
+			chartUrls: {
+				'tvEpisodeRentals': 
+				'tvSeasons':
+				'tvEpisodes':
+			}
+			sugenres: {
+				'4003':{}
+				'4004':{}
+				...
+			}
+		}
+		...
 	}
 	'''
 	
@@ -87,13 +118,6 @@ def main():
 	## genre url: "https://itunes.apple.com/cn/genre/id6005?mt=8&letter=A"
 	#aUrl = base_url + targetCountry + "/genre/id" + targetCategory_id +"?mt=8"
 	#print(aUrl)
-	for key in cg_json.keys():
-		for k in cg_json[key].keys():
-			if k == "name" or k == "id" or k == "url":
-				print(k,cg_json[key][k])
-			else:
-				print(k)
-		print('----------------------')
 	
 
 	
