@@ -2,6 +2,7 @@
 import requests
 import json
 from lxml import etree
+import pymysql
 
 '''
 [官方分类显示列表](https://affiliate.itunes.apple.com/resources/documentation/genre-mapping/)
@@ -36,6 +37,19 @@ targetCountry = "cn"
 targetPlatform = "ios"
 # 按照app名称的字母顺序进行遍历。
 alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','*']
+
+'''
+MySQL related things
+'''
+db="app_store"
+table_name = "app_names_cn"
+host = "localhost"
+user = "web_user"
+pwd = "shuangzi19940621"
+
+db = pymysql.connect(host, user, pwd, db)
+cursor = db.cursor()
+
 
 #cg: categories and genres
 def fetch_cgInfo():
@@ -100,9 +114,9 @@ def crawlByCategory(genre_dict=None):
 				# confirm this page contains valid content first
 				# fetch and parse content from the url
 				
-				apd = parseAUrl(pa_genre_url)
+				apd = parseAUrl(pa_genre_url, genre_id)
 
-def parseAUrl(url=""):
+def parseAUrl(url="",genre_id=0):
 	if url=="":
 		return None
 	print(url)
@@ -123,8 +137,31 @@ def parseAUrl(url=""):
 	if len(leftCol_texts)==0:
 		return True
 	else:
-		# 做数据存储
-
+		for each in leftCol_texts:
+			each = each.replace('\"','\\\"')
+			each = each.replace('\'','\\\'')
+			sql = 'insert into app_names_cn(app_name, genre_id) values("%s", %s)'%(each,genre_id)
+			cursor.execute(sql)
+	if len(middleCol_texts)==0:
+		db.commit()
+		return True
+	else:
+		for each in middleCol_texts:
+			each = each.replace('\"','\\\"')
+			each = each.replace('\'','\\\'')
+			sql = 'insert into app_names_cn(app_name, genre_id) values("%s", %s)'%(each,genre_id)
+			cursor.execute(sql)
+	if len(rightCol_texts)==0:
+		db.commit()
+		return True
+	else:
+		for each in rightCol_texts:
+			each = each.replace('\"','\\\"')
+			each = each.replace('\'','\\\'')
+			sql = 'insert into app_names_cn(app_name, genre_id) values("%s", %s)'%(each,genre_id)
+			cursor.execute(sql)
+		
+		db.commit()
 		return False
 
 
@@ -201,3 +238,4 @@ def main():
 
 if __name__ == '__main__':
 	main()
+	db.close()
