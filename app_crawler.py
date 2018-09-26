@@ -23,9 +23,16 @@ itunes_store按照类目分为以下若干类（见链接：https://affiliate.it
 '''
 
 genre_service_url = "https://itunes.apple.com/WebObjects/MZStoreServices.woa/ws/genres"
+# category url: "https://itunes.apple.com/cn/genre/ios/id36?mt=8"
+# genre url: "https://itunes.apple.com/cn/genre/id6005?mt=8&letter=A"
+base_url = "https://itunes.apple.com/"
+
 cgInfoFile = "./cgInfoFile.txt"
-# 在进行真正的爬去工作之前，应该根据getCategories()确定存在的目录，爬取指定的目录，这里关注app store，然后需要获取app store对应的category id。
+# 在进行真正的爬取工作之前，应该根据getCategories()确定存在的目录，爬取指定的目录，这里关注app store，然后需要获取app store对应的category id。
 targetCategory = "App Store"
+# 两个字母表示的国家代码，具体参阅https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+targetCountry = "cn"
+targetPlatform = "ios"
 
 #cg: categories and genres
 def fetch_cgInfo():
@@ -62,10 +69,32 @@ def main():
 	print("app crawler of apple app store ...")
 	cg_json_str = read_cgInfo()
 	cg_json = json.loads(cg_json_str)
+	'''
+	{
+		category_id:{
+			name:
+			id:
+			url:
+			rssUrls:
+			chartUrls:
+			subgenres:
+		}
+	}
+	'''
 	
 	category_dict = getCategories(cg_json)
 	targetCategory_id = category_dict[targetCategory]
-	print(targetCategory_id)
+	## genre url: "https://itunes.apple.com/cn/genre/id6005?mt=8&letter=A"
+	#aUrl = base_url + targetCountry + "/genre/id" + targetCategory_id +"?mt=8"
+	#print(aUrl)
+	for key in cg_json.keys():
+		for k in cg_json[key].keys():
+			if k == "name" or k == "id" or k == "url":
+				print(k,cg_json[key][k])
+			else:
+				print(k)
+		print('----------------------')
+	
 
 	
 
