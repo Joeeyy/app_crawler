@@ -33,6 +33,8 @@ targetCategory = "App Store"
 # 两个字母表示的国家代码，具体参阅https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
 targetCountry = "cn"
 targetPlatform = "ios"
+# 按照app名称的字母顺序进行遍历。
+alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','*']
 
 #cg: categories and genres
 def fetch_cgInfo():
@@ -62,6 +64,7 @@ def getCategories(cg_json=None):
 
 	return category_dict
 
+# returns a dict, in which genre_name is the key, and id is the value
 def getGenres(cg_json=None, category_dict=None, target=""):
 	genre_dict = {}
 	if cg_json==None or category_dict==None or target == "":
@@ -73,11 +76,39 @@ def getGenres(cg_json=None, category_dict=None, target=""):
 
 	return genre_dict
 
-
+# crawl by category
 def crawlByCategory(genre_dict=None):
 	if genre_dict == None:
 		return None
-	print(genre_dict)
+
+	# get genre name
+	for genre_name, genre_id in genre_dict.items():
+		print("crawling genre: %s"%genre_name)
+		genre_url = base_url + targetCountry + "/genre/id" + genre_id +"?mt=8"
+		# get an element from alphabet
+		for a in alphabet:
+			a_genre_url = genre_url + "&letter=%s"%a
+			page = 10
+			# by page
+			while page>0:
+				pa_genre_url = a_genre_url + "&page=%d"%page
+				page = page - 1
+				
+				# here we've got the target url, pa_genre_url
+
+				# next steps, we need to study the structure of the target html
+
+				# confirm this page contains valid content first
+
+
+				# fetch and parse content from the url
+
+def parseAUrl(url=""):
+	if url=="":
+		return None
+	print(url)
+
+
 
 
 def main():
@@ -142,7 +173,11 @@ def main():
 	'''
 	genre_dict = getGenres(cg_json, category_dict, targetCategory)
 	
-	crawlByCategory(genre_dict)
+	#crawlByCategory(genre_dict)
+
+	# https://itunes.apple.com/cn/genre/id6001?mt=8&letter=*&page=1
+	# https://itunes.apple.com/cn/genre/id6001?mt=8&letter=*&page=10
+	
 	
 
 	
