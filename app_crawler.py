@@ -1,6 +1,7 @@
 #coding=utf8
 import requests
 import json
+from lxml import etree
 
 '''
 [官方分类显示列表](https://affiliate.itunes.apple.com/resources/documentation/genre-mapping/)
@@ -107,6 +108,26 @@ def parseAUrl(url=""):
 	if url=="":
 		return None
 	print(url)
+	#response = requests.get(url)
+	#status_code = response.status_code
+	#html_text = response.text
+	
+	#print("status_code: %d"%status_code)
+	#print("content:" + html_text)
+	f = open('./page_example.html','r')
+	html_text = f.read()
+	f.close()
+
+	html = etree.HTML(html_text)
+	# 主信息块
+	#leftCol = html.xpath('//div[@id="selectedcontent"]/div[@class="column first"]/ul/li/a/text()')
+	leftCol = html.xpath('//div[@id="selectedcontent"]/div[@class="column first"]/ul/li/a/@href')
+	if len(leftCol)==0:
+		print("no element.")
+	else:
+		print(len(leftCol))
+	for each in leftCol:
+		print(each)
 
 
 
@@ -175,9 +196,9 @@ def main():
 	
 	#crawlByCategory(genre_dict)
 
-	# https://itunes.apple.com/cn/genre/id6001?mt=8&letter=*&page=1
+	aUrl = "https://itunes.apple.com/cn/genre/id6001?mt=8&letter=*&page=1"
 	# https://itunes.apple.com/cn/genre/id6001?mt=8&letter=*&page=10
-	
+	parseAUrl(aUrl)
 	
 
 	
