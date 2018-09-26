@@ -2,6 +2,7 @@
 import requests
 import json
 from lxml import etree
+import threading
 
 '''
 [官方分类显示列表](https://affiliate.itunes.apple.com/resources/documentation/genre-mapping/)
@@ -22,7 +23,7 @@ itunes_store按照类目分为以下若干类（见链接：https://affiliate.it
 分类包括分类名（genre_name），分类id（genre_id）
 分类结构化内容可以由https://itunes.apple.com/WebObjects/MZStoreServices.woa/ws/genres得到。
 '''
-
+proxies = {"http": "http://127.0.0.1:8118","https": "http://127.0.0.1:8118",}
 genre_service_url = "https://itunes.apple.com/WebObjects/MZStoreServices.woa/ws/genres"
 # category url: "https://itunes.apple.com/cn/genre/ios/id36?mt=8"
 # genre url: "https://itunes.apple.com/cn/genre/id6005?mt=8&letter=A"
@@ -105,7 +106,7 @@ def parseAUrl(url=""):
 	if url=="":
 		return None
 	print(url)
-	response = requests.get(url)
+	response = requests.get(url,proxies=proxies)
 	status_code = response.status_code
 	html_text = response.text
 	
@@ -191,7 +192,9 @@ def main():
 	'''
 	genre_dict = getGenres(cg_json, category_dict, targetCategory)
 	
+	# 爬取进度记录，（到哪个国家，到哪个category，）到哪个genre，到哪个alphabet，到哪个page
 	crawlByCategory(genre_dict)
+
 	
 
 	
