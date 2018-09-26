@@ -2,7 +2,6 @@
 import requests
 import json
 from lxml import etree
-import threading
 
 '''
 [官方分类显示列表](https://affiliate.itunes.apple.com/resources/documentation/genre-mapping/)
@@ -90,17 +89,18 @@ def crawlByCategory(genre_dict=None):
 		# get an element from alphabet
 		for a in alphabet:
 			a_genre_url = genre_url + "&letter=%s"%a
-			page = 10
+			page = 1
+			apd = False # all page done
 			# by page
-			while page>0:
+			while not apd:
 				pa_genre_url = a_genre_url + "&page=%d"%page
-				page = page - 1
-				
+				page += 1
 				# here we've got the target url, pa_genre_url
 				# next steps, we need to study the structure of the target html
 				# confirm this page contains valid content first
 				# fetch and parse content from the url
-				parseAUrl(pa_genre_url)
+				
+				apd = parseAUrl(pa_genre_url)
 
 def parseAUrl(url=""):
 	if url=="":
@@ -115,17 +115,17 @@ def parseAUrl(url=""):
 	html = etree.HTML(html_text)
 	# 主信息块，分为左中右三块。
 	leftCol_texts = html.xpath('//div[@id="selectedcontent"]/div[@class="column first"]/ul/li/a/text()')
-	leftCol_hrefs = html.xpath('//div[@id="selectedcontent"]/div[@class="column first"]/ul/li/a/@href')
+	#leftCol_hrefs = html.xpath('//div[@id="selectedcontent"]/div[@class="column first"]/ul/li/a/@href')
 	middleCol_texts = html.xpath('//div[@id="selectedcontent"]/div[@class="column"]/ul/li/a/text()')
-	middleCol_hrefs = html.xpath('//div[@id="selectedcontent"]/div[@class="column"]/ul/li/a/@href')
+	#middleCol_hrefs = html.xpath('//div[@id="selectedcontent"]/div[@class="column"]/ul/li/a/@href')
 	rightCol_texts = html.xpath('//div[@id="selectedcontent"]/div[@class="column last"]/ul/li/a/text()')
-	rightCol_hrefs = html.xpath('//div[@id="selectedcontent"]/div[@class="column last"]/ul/li/a/@href')
+	#rightCol_hrefs = html.xpath('//div[@id="selectedcontent"]/div[@class="column last"]/ul/li/a/@href')
 	if len(leftCol_texts)==0:
-		print("no element.")
+		return True
 	else:
-		print(len(leftCol_texts))
-	for each in leftCol_texts:
-		print(each)
+		# 做数据存储
+
+		return False
 
 
 
