@@ -10,7 +10,7 @@ Here, I write a python crawler. I make the crawling by the following steps:
 
 ### 0x00 Get cgInfo (information of categories and genres)
 
-Get all categories and genres of a certain App Store (iPhone App Store of China, for current situation). This information is provided at this link: [](https://affiliate.itunes.apple.com/resources/documentation/genre-mapping/), but note that API provided at the former link offers information of the USA's App Store by default. And I've queried Apple about this, but no answer got until now.
+Get all categories and genres of a certain App Store (iPhone App Store of China, for current situation). This information is provided at this link: [https://affiliate.itunes.apple.com/resources/documentation/genre-mapping/](https://affiliate.itunes.apple.com/resources/documentation/genre-mapping/), but note that API provided at the former link offers information of the USA's App Store by default. And I've queried Apple about this, but no answer got until now.
 You will get a json format data if you request the [API](https://itunes.apple.com/WebObjects/MZStoreServices.woa/ws/genres) at the former link. That's something like that following:
 ```
 {
@@ -66,7 +66,7 @@ Using cgInfo got from the first step, we can get genres of a certain category, n
 
 ### 0x02 Crawling stage
 
-We can get apps sorted by alphabet at the folloing link: [](https://itunes.apple.com/cn/genre/id6005?mt=8&letter=A&page=1) .
+We can get apps sorted by alphabet at the folloing link: [https://itunes.apple.com/cn/genre/id6005?mt=8&letter=A&page=1](https://itunes.apple.com/cn/genre/id6005?mt=8&letter=A&page=1) .
 There are four parts we need to pay attention to in the former link.
 1. cn: This is a tow-lettter country code. You can find more details about that [here](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
 2. id6005: id6005 here is a genre in App Store category, which means Social Networking.
