@@ -79,4 +79,4 @@ For now, we can get a series of links which contains plenty of apps information,
 ## Other things
 
 1. For anonymous identity while requesting, you can use proxies.
-2. Contect me at <[](joeeeee@foxmail.com)> if you have any suggestions. 
+2. Contect me at <[joeeeee@foxmail.com](joeeeee@foxmail.com)> if you have any suggestions. 
