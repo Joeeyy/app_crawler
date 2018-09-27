@@ -15,14 +15,6 @@ import pymysql
 	然后根据名称查询到app具体内容。主要是bundle id，图标也是考虑内容之一。
 '''
 
-'''
-本爬虫目标位app_store中的app信息，由于app_store隶属于itunes_store，这里是用的是itunes_store提供的文档进行开发。
-itunes_store按照类目分为以下若干类（见链接：https://affiliate.itunes.apple.com/resources/documentation/genre-mapping/）。
-分类级别如下：
-目录(category) -> 分类(genre) -> 子类(subgenre)
-分类包括分类名（genre_name），分类id（genre_id）
-分类结构化内容可以由https://itunes.apple.com/WebObjects/MZStoreServices.woa/ws/genres得到。
-'''
 proxies = {"http": "http://127.0.0.1:8118","https": "http://127.0.0.1:8118",}
 genre_service_url = "https://itunes.apple.com/WebObjects/MZStoreServices.woa/ws/genres"
 # category url: "https://itunes.apple.com/cn/genre/ios/id36?mt=8"
@@ -44,8 +36,8 @@ MySQL related things
 db="app_store"
 table_name = "app_names_cn"
 host = "localhost"
-user = "web_user"
-pwd = "shuangzi19940621"
+user = ""
+pwd = ""
 
 db = pymysql.connect(host, user, pwd, db)
 cursor = db.cursor()
@@ -164,77 +156,16 @@ def parseAUrl(url="",genre_id=0):
 		db.commit()
 		return False
 
-
-
-
 def main():
 	print("app crawler of apple app store ...")
 	cg_json_str = read_cgInfo()
 	cg_json = json.loads(cg_json_str)
-	'''
-	{
-		category_id:{
-			name:
-			id:
-			url:
-			rssUrls: {'': ''}
-			chartUrls: {'': ''}
-			subgenres: {'': {
-				name: 
-				id: 
-				url: 
-				rssUrls: {'': ''}
-				chartUrls: {'': ''}
-				# and for some cases, Games for example, there is still a subgenres
-			}}
-		}
-	}
-
-	example: 
-	{
-		36:{
-			name: TV Shows,
-			id: 32
-			url: https://itunes.apple.com/us/genre/tv-shows/id32
-			rssUrls: {
-				'topTvEpisodes':
-				'topTvEpisodeRentals':
-				'topTvSeasons':
-			}
-			chartUrls: {
-				'tvEpisodeRentals': 
-				'tvSeasons':
-				'tvEpisodes':
-			}
-			sugenres: {
-				'4003':{}
-				'4004':{}
-				...
-			}
-		}
-		...
-	}
-	'''
 	
 	category_dict = getCategories(cg_json)
 	targetCategory_id = category_dict[targetCategory]
-	## genre url: "https://itunes.apple.com/cn/genre/id6005?mt=8&letter=A"
-	#aUrl = base_url + targetCountry + "/genre/id" + targetCategory_id +"?mt=8"
-	#print(aUrl)
-	'''
-	1. 按照category来，访问到链接如：https://itunes.apple.com/cn/genre/id6005?mt=8，其中'id6005'应该是一个category
-	2. 对于每个category，按照字典顺序遍历，字典[a-z,#]，在[1]中链接后追加如letter=A便可以实现
-	3. 对于每个字典，进行页数遍历，在[2]中链接基础上增加page=1即可实现，通过页面中指定区域是否含有内容标记是否对该字典中字母的内容爬取完毕。
-	这一步主要是对app名称信息的爬取。
-	'''
 	genre_dict = getGenres(cg_json, category_dict, targetCategory)
 	
-	# 爬取进度记录，（到哪个国家，到哪个category，）到哪个genre，到哪个alphabet，到哪个page
 	crawlByCategory(genre_dict)
-
-	
-
-	
 
 if __name__ == '__main__':
 	main()
