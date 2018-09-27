@@ -76,6 +76,9 @@ All four parts here can be considered as essential parameters of our crawler. I'
 
 For now, we can get a series of links which contains plenty of apps information, and our following task is to parse those links. It's an easy task, and not worthy of a word. After you got those information you need, you can use them as you wish.
 
+## Single and Multi Thread
+Single thread version: [here](https://github.com/Joeeyy/app_crawler/blob/master/app_crawler.py)
+
 ## Other things
 
 1. For anonymous identity while requesting, you can use proxies.
