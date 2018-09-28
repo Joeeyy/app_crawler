@@ -58,7 +58,7 @@ You will get a json format data if you request the [API](https://itunes.apple.co
     ...
 }
 ```
-You can also get a real example from [here](https://raw.githubusercontent.com/Joeeyy/app_crawler/master/cgInfoFile.txt)
+You can also get a real example from [here](https://raw.githubusercontent.com/Joeeyy/app_crawler/master/cgInfoFile.txt).
 It offers us information of all categories in iTunes Store, and App Store or Mac App Store is a part of iTunes Store. Our target category here is "App Store", and its' id is 36.
 
 ### 0x01 Get genres of a certain category
