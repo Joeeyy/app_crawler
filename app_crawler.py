@@ -42,6 +42,18 @@ pwd = ""
 db = pymysql.connect(host, user, pwd, db)
 cursor = db.cursor()
 
+failed_sqls = []
+failed_requests = []
+failed_sqls_file = "./failed_sqls.txt"
+failed_requests_file = "./failed_requests.txt"
+
+# 
+def clean_name(name):
+	name = name.replace('\"','\\\"')
+	name = name.replace('\'','\\\'')
+	name = name.replace('\\','\\\\')
+
+	return name
 
 #cg: categories and genres
 def fetch_cgInfo():
@@ -112,7 +124,11 @@ def parseAUrl(url="",genre_id=0):
 	if url=="":
 		return None
 	print(url)
-	response = requests.get(url,proxies=proxies)
+	try:
+		response = requests.get(url,proxies=proxies,timeout=60)
+	except:
+		failed_requests.append((genre_id, url))
+		return False
 	status_code = response.status_code
 	html_text = response.text
 	
@@ -123,35 +139,40 @@ def parseAUrl(url="",genre_id=0):
 	leftCol_texts = html.xpath('//div[@id="selectedcontent"]/div[@class="column first"]/ul/li/a/text()')
 	#leftCol_hrefs = html.xpath('//div[@id="selectedcontent"]/div[@class="column first"]/ul/li/a/@href')
 	middleCol_texts = html.xpath('//div[@id="selectedcontent"]/div[@class="column"]/ul/li/a/text()')
-	#middleCol_hrefs = html.xpath('//div[@id="selectedcontent"]/div[@class="column"]/ul/li/a/@href')
 	rightCol_texts = html.xpath('//div[@id="selectedcontent"]/div[@class="column last"]/ul/li/a/text()')
-	#rightCol_hrefs = html.xpath('//div[@id="selectedcontent"]/div[@class="column last"]/ul/li/a/@href')
+	
 	if len(leftCol_texts)==0:
 		return True
 	else:
 		for each in leftCol_texts:
-			each = each.replace('\"','\\\"')
-			each = each.replace('\'','\\\'')
+			each = clean_name(each)
 			sql = 'insert into app_names_cn(app_name, genre_id) values("%s", %s)'%(each,genre_id)
-			cursor.execute(sql)
+			try:
+				cursor.execute(sql)
+			except:
+				failed_sqls.append(sql)
 	if len(middleCol_texts)==0:
 		db.commit()
 		return True
 	else:
 		for each in middleCol_texts:
-			each = each.replace('\"','\\\"')
-			each = each.replace('\'','\\\'')
+			each = clean_name(each)
 			sql = 'insert into app_names_cn(app_name, genre_id) values("%s", %s)'%(each,genre_id)
-			cursor.execute(sql)
+			try:
+				cursor.execute(sql)
+			except:
+				failed_sqls.append(sql)
 	if len(rightCol_texts)==0:
 		db.commit()
 		return True
 	else:
 		for each in rightCol_texts:
-			each = each.replace('\"','\\\"')
-			each = each.replace('\'','\\\'')
+			each = clean_name(each)
 			sql = 'insert into app_names_cn(app_name, genre_id) values("%s", %s)'%(each,genre_id)
-			cursor.execute(sql)
+			try:
+				cursor.execute(sql)
+			except:
+				failed_sqls.append(sql)
 		
 		db.commit()
 		return False
@@ -166,6 +187,18 @@ def main():
 	genre_dict = getGenres(cg_json, category_dict, targetCategory)
 	
 	crawlByCategory(genre_dict)
+
+	if len(failed_sqls) != 0:
+		f = open(failed_sqls_file,'w')
+		for each in failed_sqls:
+			f.write(each+"\n")
+		f.close()
+
+	if len(failed_requests) != 0:
+		f = open(failed_requests_file,'w')
+		for each in failed_requests:
+			f.write(each[0]+" "+each[1])
+		f.close()
 
 if __name__ == '__main__':
 	main()
