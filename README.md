@@ -2,7 +2,7 @@
 
 ## Target
 
-To crawl all the information of the apps in App Store. For current demand, I crawled apps of iPhone in App Store of China.
+To crawl the information of **ALL** the apps in App Store. For current demand, I crawled apps of iPhone in App Store of China.
 
 ## Solution
 
@@ -98,6 +98,69 @@ crawl_dict = {
     }
 }
 ```
+And this `crawl_dict` can also server as a process recorder. If you program terminated due to some reasons, you can record the current state of crawling by saving this crawl_dict. Note that this functionality is not tested till now.  
+
+## For app info collection
+
+Now we have all the names of all apps, so what we do next is collecting informatio of each app and save those information. 
+> How to Search?
+Apple offers an API to call when you want to search an item in iTunes Store, which is called as [iTunes Search API](https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/). According to documention of this API, our requesting url should be something like `http://itunes.apple.com/search?term=Google&country=cn&entity=software&limit=1` if we want to search an `app` named `Google` in `App Store of China`, and we only want `**1**` result. The result is shown in the format as follows:
+```
+{
+    "resultCount": number
+    "results": [
+    {
+        screenshotUrls: []
+        ipadScreenshotUrls: []
+        appletvScreenshotUrls: []
+        artworkUrl60: str
+        artworkUrl512: str
+        artworkUrl100: str
+        artistViewUrl: str
+        supportedDevices: []
+        isGameCenterEnabled: bool
+        advisories: []
+        kind: str
+        features: []
+        averageUserRatingForCurrentVersion: float
+        trackCensoredName: str
+        languageCodesISO2A: []
+        fileSizeBytes: str
+        sellerUrl: str
+        contentAdvisoryRating: str
+        userRatingCountForCurrentVersion: int
+        trackViewUrl: str
+        trackContentRating: str
+        minimumOsVersion: str
+        currentVersionReleaseDate: str
+        releaseNotes: str
+        sellerName: str
+        trackId: int 
+        trackName: str
+        formattedPrice: str
+        releaseDate: str
+        primaryGenreName: str
+        primaryGenreId: int
+        isVppDeviceBasedLicensingEnabled: bool
+        currency: str
+        wrapperType: str
+        version: str
+        description: str
+        artistId: int
+        artistName: str
+        genres: []
+        price: float
+        bundleId: str
+        genreIds: []
+        averageUserRating: float
+        userRatingCount: int
+    }
+    ...
+    ]
+}
+```
+And [here](https://github.com/Joeeyy/app_crawler/blob/master/app_info_of_google.txt) comes the real example.
+
 
 ## Other things
 
