@@ -49,9 +49,9 @@ failed_requests_file = "./failed_requests.txt"
 
 # 
 def clean_name(name):
+    name = name.replace('\\','\\\\')
 	name = name.replace('\"','\\\"')
 	name = name.replace('\'','\\\'')
-	name = name.replace('\\','\\\\')
 
 	return name
 
@@ -146,7 +146,7 @@ def parseAUrl(url="",genre_id=0):
 	else:
 		for each in leftCol_texts:
 			each = clean_name(each)
-			sql = 'insert into app_names_cn(app_name, genre_id) values("%s", %s)'%(each,genre_id)
+			sql = 'insert into %s(app_name, genre_id) values("%s", %s)'%(table_name,each,genre_id)
 			try:
 				cursor.execute(sql)
 			except:
@@ -157,7 +157,7 @@ def parseAUrl(url="",genre_id=0):
 	else:
 		for each in middleCol_texts:
 			each = clean_name(each)
-			sql = 'insert into app_names_cn(app_name, genre_id) values("%s", %s)'%(each,genre_id)
+			sql = 'insert into %s(app_name, genre_id) values("%s", %s)'%(table_name, each,genre_id)
 			try:
 				cursor.execute(sql)
 			except:
@@ -168,7 +168,7 @@ def parseAUrl(url="",genre_id=0):
 	else:
 		for each in rightCol_texts:
 			each = clean_name(each)
-			sql = 'insert into app_names_cn(app_name, genre_id) values("%s", %s)'%(each,genre_id)
+			sql = 'insert into %s(app_name, genre_id) values("%s", %s)'%(table_name,each,genre_id)
 			try:
 				cursor.execute(sql)
 			except:
