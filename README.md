@@ -103,6 +103,7 @@ And this `crawl_dict` can also server as a process recorder. If you program term
 ## For app info collection
 
 Now we have all the names of all apps, so what we do next is collecting informatio of each app and save those information. 
+
 > How to Search?
 
 Apple offers an API to call when you want to search an item in iTunes Store, which is called as [iTunes Search API](https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/). According to documention of this API, our requesting url should be something like `http://itunes.apple.com/search?term=Google&country=cn&entity=software&limit=1` if we want to search an `app` named `Google` in `App Store of China`, and we only want `**1**` result. The result is shown in the format as follows:
