@@ -78,6 +78,25 @@ For now, we can get a series of links which contains plenty of apps information,
 
 ## Single and Multi Thread
 Single thread version: [here](https://github.com/Joeeyy/app_crawler/blob/master/app_crawler.py)
+Multi-thread version: [here](https://github.com/Joeeyy/app_crawler/blob/master/mul_app_crawler.py)
+
+### Details about multi-thread crawler
+
+Use a special json format file to implement synchronization between threads, like the following:
+```
+crawl_dict = {
+    genre: {
+        'A': {
+            current_index = num
+            done: False # done, when crawl finished
+        }
+        'B': {
+
+        }
+        ...
+    }
+}
+```
 
 ## Other things
 
