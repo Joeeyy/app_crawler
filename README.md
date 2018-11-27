@@ -1,6 +1,8 @@
 # App_Crawler
 [Demo](http://97.64.46.11/AppStore_Crawler_Demo/index.html)
 
+Because database on Demo site is not up to date, there will be a number of apps which are not recorded on our system. You can still check their info on site `http://97.64.46.11/AppStore_Crawler_Demo/appInfo.html?{appname}`, just remember to substitute `{appname}` with name of your target app.
+
 ## Target
 
 To crawl the information of **ALL** the apps in App Store. For current demand, I crawled apps of iPhone in App Store of China.
