@@ -170,7 +170,3 @@ You just pick contents that you're interested in, and do the batch of searching.
 
 > Note that there is a request frequency limit, 20 calls per minute. To override thie limit, consider [EPF](https://affiliate.itunes.apple.com/resources/documentation/itunes-enterprise-partner-feed/)
 
-## Other things
-1. Programs here are developed in Python 3.6.3
-2. For anonymous identity while requesting, you can use proxies.
-3. Contect me at <[joeeeee@foxmail.com](joeeeee@foxmail.com)> if you have any suggestions. 
